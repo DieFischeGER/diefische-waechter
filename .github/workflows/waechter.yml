@@ -1,0 +1,45 @@
+name: Absturz-Waechter
+# Alle 5 Min angestossen von cron-job.org (workflow_dispatch). GitHub-Zeitplan nur als Ersatz.
+on:
+  workflow_dispatch:
+    inputs:
+      modus:
+        description: "normal | test (nur Anmeldung pruefen + Testmeldung, nie starten)"
+        required: false
+        default: "normal"
+  schedule:
+    - cron: "7,37 * * * *"
+concurrency:
+  group: waechter
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zustand holen
+        run: |
+          git fetch -q origin zustand 2>/dev/null && git show FETCH_HEAD:zustand.json > zustand.json 2>/dev/null || echo "{}" > zustand.json
+      - name: Pruefen
+        env:
+          NEXUS_EMAIL: ${{ secrets.NEXUS_EMAIL }}
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          DISCORD_ALARM: ${{ secrets.DISCORD_ALARM }}
+          DISCORD_ERWAEHNEN: ${{ secrets.DISCORD_ERWAEHNEN }}
+          PAUSE: ${{ vars.PAUSE }}
+          MODUS: ${{ github.event.inputs.modus || 'normal' }}
+        run: python3 waechter.py
+      - name: Zustand speichern
+        if: always()
+        run: |
+          cp zustand.json /tmp/z.json
+          git config user.name "Waechter"; git config user.email "waechter@users.noreply.github.com"
+          git checkout -q --orphan zustand-neu
+          git rm -rfq . >/dev/null
+          cp /tmp/z.json zustand.json
+          git add zustand.json
+          git commit -qm "Zustand $(TZ=Europe/Berlin date '+%d.%m. %H:%M')"
+          git push -qf origin zustand-neu:zustand

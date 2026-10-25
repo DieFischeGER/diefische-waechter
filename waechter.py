@@ -1,4 +1,4 @@
-# DieFische Absturz-Waechter (Manu 22.10.2026: "der Server darf nicht so lang offline sein")
+# Sektor7 Absturz-Waechter (Manu 22.10.2026: "der Server darf nicht so lang offline sein")
 # Alle 5 Minuten: steht der Server im Nexus-Panel auf "gestoppt" (z. B. nach einem Absturz)
 # und ist gerade KEIN normaler Neustart-Zeitraum, druecke ich "Start" und melde es in Discord.
 # Einen LAUFENDEN Server fasse ich nie an. Zugangsdaten nur aus GitHub-Secrets.
@@ -29,13 +29,13 @@ def discord(titel, text, farbe):
         log("Discord-Webhook fehlt")
         return
     uid = os.environ.get("DISCORD_ERWAEHNEN", "").strip()
-    body = {"username": "Fische-Bot", "content": f"<@{uid}>" if uid else "",
+    body = {"username": "Sektor7-Bot", "content": f"<@{uid}>" if uid else "",
             "allowed_mentions": {"users": [uid] if uid else []},
             "embeds": [{"title": titel, "description": text,
                         "color": {"rot": 0xE74C3C, "gelb": 0xF1C40F, "gruen": 0x2ECC71}[farbe],
-                        "footer": {"text": f"DieFische Absturz-Wächter • {jetzt():%d.%m.%Y %H:%M}"}}]}
+                        "footer": {"text": f"Sektor7 Absturz-Wächter • {jetzt():%d.%m.%Y %H:%M}"}}]}
     req = urllib.request.Request(url, data=json.dumps(body).encode(),
-                                 headers={"Content-Type": "application/json", "User-Agent": "DieFische-Bot"})
+                                 headers={"Content-Type": "application/json", "User-Agent": "Sektor7-Bot"})
     try:
         urllib.request.urlopen(req, timeout=20).close()
         log("Discord gesendet:", titel)

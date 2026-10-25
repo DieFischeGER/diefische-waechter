@@ -1,10 +1,10 @@
-# DieFische: Zugriff aufs Nexus-Panel (nur fuer den Puls-Waechter: Spielerliste lesen + Server neu starten).
+# Sektor7: Zugriff aufs Nexus-Panel (nur fuer den Puls-Waechter: Spielerliste lesen + Server neu starten).
 # Anmeldung mit einem EIGENEN Unterkonto (sekundaerer Zugriff nur mit Recht "Aktion" + "Log").
 # Zugangsdaten NUR aus GitHub-Secrets: NEXUS_EMAIL, NEXUS_PASS. Nie ausgeben, nie speichern.
 import os, re, json, base64, secrets, urllib.request, urllib.parse, http.cookiejar
 
 BASIS = "https://panel.nexus-games.com"
-UA = "Mozilla/5.0 (DieFische-Puls)"
+UA = "Mozilla/5.0 (Sektor7-Puls)"
 
 
 class Panel:

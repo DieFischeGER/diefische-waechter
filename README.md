@@ -1,4 +1,4 @@
-# Sektor7 Absturz-Wächter (Repo Sektor7GER/sektor7-waechter, bis 25.10.2026 DieFischeGER/diefische-waechter)
+# Sektor7 Absturz-Wächter (Repo Sektor7GER/sektor7-waechter)
 
 Kleiner Wächter für den DayZ-Server „Sektor7“: alle 5 Minuten wird im Nexus-Panel geschaut,
 ob der Server läuft. Steht er außerhalb der normalen Neustartzeiten auf **gestoppt** (z. B. nach einem Absturz),

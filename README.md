@@ -7,3 +7,5 @@ wird er gestartet und in Discord gemeldet. Ein laufender Server wird nie angefas
 - Zugangsdaten nur als GitHub-Secrets: `NEXUS_EMAIL`, `NEXUS_PASS`, `DISCORD_ALARM`, `DISCORD_ERWAEHNEN`.
 - **Pause** (z. B. wenn der Server absichtlich aus bleiben soll): Settings → Secrets and variables → Actions → *Variables* → `PAUSE` = `1`. Zum Weitermachen löschen oder `0`.
 - Test: Actions → Absturz-Wächter → Run workflow → Modus `test`.
+
+- **Wetter für den S7-Launcher** (seit 26.10.2026): bei jedem Lauf holt `wetter.py` die Wetterdatei des Servers und legt sie in den Zweig `wetter` (`wetter_deerisle.txt`). Nur Wetterwerte, keine Zugangsdaten. Fehler dabei stören den Wächter nie.

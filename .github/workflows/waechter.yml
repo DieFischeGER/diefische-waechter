@@ -32,6 +32,27 @@ jobs:
           PAUSE: ${{ vars.PAUSE }}
           MODUS: ${{ github.event.inputs.modus || 'normal' }}
         run: python3 waechter.py
+      - name: Wetter fuer den Launcher (Zweig "wetter")
+        # 26.10.2026 (Manu 16:16): alle 5 Min statt nur alle 30 Min im Takt. Stoert den Waechter nie.
+        if: always()
+        continue-on-error: true
+        env:
+          NEXUS_EMAIL: ${{ secrets.NEXUS_EMAIL }}
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 wetter.py
+          ls wetter_*.txt >/dev/null 2>&1 || exit 0
+          rm -rf /tmp/wetter && mkdir -p /tmp/wetter && cp wetter_*.txt /tmp/wetter/
+          cd /tmp/wetter
+          git init -q -b wetter
+          git config user.name "Sektor7-Wetter"; git config user.email "wetter@users.noreply.github.com"
+          printf "Wetter der Sektor7-Server fuer den S7-Launcher (wird alle 5 Min ueberschrieben).\n" > README.md
+          git add . && git commit -qm "Wetter $(TZ=Europe/Berlin date '+%d.%m. %H:%M')"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" wetter:wetter
+          echo "Wetter veroeffentlicht."
       - name: Zustand speichern
         if: always()
         run: |

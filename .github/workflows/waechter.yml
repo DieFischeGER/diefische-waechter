@@ -63,4 +63,10 @@ jobs:
           cp /tmp/z.json zustand.json
           git add zustand.json
           git commit -qm "Zustand $(TZ=Europe/Berlin date '+%d.%m. %H:%M')"
-          git push -qf origin zustand-neu:zustand
+          # 26.10.2026 (Manu 23:42): bei GitHub-Aussetzern ("remote rejected") bis zu 3 Versuche statt Fehlermail
+          for i in 1 2 3; do
+            git push -qf origin zustand-neu:zustand && exit 0
+            echo "Speichern fehlgeschlagen (Versuch $i), neuer Versuch in 10 s ..."
+            sleep 10
+          done
+          exit 1

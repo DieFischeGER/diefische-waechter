@@ -1,0 +1,8 @@
+stand;2026-10-31 21:00:09
+bewoelkung;0.47061
+regen;0
+nebel;0.0636611
+schnee;0
+wind;16.0172
+temp;16.2727
+ingame;10:25
